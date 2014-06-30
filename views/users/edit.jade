@@ -1,0 +1,18 @@
+extends ../layout
+
+block content
+
+  - if (message)
+    .message.info
+      span= message
+  h1=title
+
+  p #{user.username}
+  p #{user.email}
+  form(name="editUser", action="/user/edit/#{user.username}" method="post")
+      input(type="text", name="username", id="username", placeholder="Username", value="#{user.username}")
+      input(type="password", name="password", placeholder="Password", id="password")
+      input(type="text", name="email", id="email", placeholder="Email", value="#{user.email}")
+      input(type="submit", value="Save User")
+
+  

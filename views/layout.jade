@@ -1,0 +1,22 @@
+doctype html
+html
+  head
+    title= title
+    link(rel='stylesheet', href='/stylesheets/style.css')
+    script(type='text/javascript' src='//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js')
+    script(type='text/javascript' src='/js/app.js')
+  body
+  ul
+    li
+      a(href='/login') Login
+    li
+      a(href='/logout') Logout
+    li
+      a(href='/users') Users
+    li
+      a(href='/user/forgot_password') Forgot Password  
+    block content
+    - if(typeof errors === 'object')
+        script.
+          var errors = !{JSON.stringify(errors)}
+      

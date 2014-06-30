@@ -1,0 +1,26 @@
+extends ../layout
+
+block content
+  - if (message)
+    .message.info
+      span= message
+  h1= title
+  p Welcome to #{title}
+  
+   form(name="createUser", action="/users" method="post")
+      input(type="text", name="username")
+      input(type="text", name="email")
+      input(type="submit", value="Save User")
+
+  ul
+  - each user in users
+    li 
+        p #{user.username}
+        p #{user.email}
+        ul
+          li 
+            a(href='/user/delete/#{user.id}') Delete
+          li 
+            a(href='/user/edit/#{user.username}') Edit
+
+ 

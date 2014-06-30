@@ -1,0 +1,16 @@
+extends ../layout
+
+block content
+
+  - if (message)
+    .message.info
+      span= message
+  h1=title
+  
+  p Forget your password? Enter your email address below to regain access
+  
+  form(name="forgot_password", action="/user/forgot_password" method="post")
+      input(type="text", name="email", id="email", placeholder='Enter Email')
+      input(type="submit", value="Send Email")
+
+  
