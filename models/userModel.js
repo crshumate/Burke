@@ -39,6 +39,9 @@ UserSchema.statics = {
 UserSchema.methods = {
     encryptPassword: function(password) {
         return crypto.createHmac('sha512', UserSchema.statics.salt).update(password).digest('hex');
+    },
+    validPassword:function(pwd){
+        return (this.password === UserSchema.methods.encryptPassword(pwd)); 
     }
 
 }
@@ -51,10 +54,6 @@ UserSchema.pre('save', function(next) {
     next();
 })
 
-UserSchema.methods.validPassword = function(pwd) {
-    // EXAMPLE CODE!
-    return (this.password === UserSchema.methods.encryptPassword(pwd));
-}
 
 var UserModel = mongoose.model('User', UserSchema);
 

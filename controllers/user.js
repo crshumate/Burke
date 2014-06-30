@@ -1,10 +1,11 @@
 var mongoose = require('mongoose');
 var UserModel = mongoose.model('User');
 var passport = require('passport');
+
 exports.index = function(req, res) {
     var message = req.flash('info');
+    console.log('GET!!!');
     if (req.method === 'GET') {
-        console.log('METHOD GET');
         UserModel.find(function(err, users) {
             if (!err) {
                 res.render('users/users', {
@@ -89,7 +90,7 @@ exports.edit = function(req, res) {
                     req.flash('info', 'User Updated');
                     res.redirect('/users');
                 } else {
-
+                    console.log(err);
                     res.render('users/edit', {
                         title: 'Edit Page',
                         user: user,

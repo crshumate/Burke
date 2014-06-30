@@ -10,7 +10,6 @@ app.global={
 		}
 		
 	},
-
 	showErrors:function(){
 		$.each(app.global.errors, function(i,e){
 			var msg =$("<span />").text(e.message);
