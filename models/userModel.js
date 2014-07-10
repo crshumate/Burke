@@ -55,7 +55,7 @@ UserSchema.pre('save', function(next) {
 })
 
 
-var UserModel = mongoose.model('User', UserSchema);
+var UserModel = mongoose.model('users', UserSchema);
 
 UserModel.resetpw = function() {
     function randomString(length, chars) {

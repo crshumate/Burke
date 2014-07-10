@@ -1,6 +1,6 @@
 var passport = require('passport'),
     mongoose = require('mongoose'),
-    UserModel = mongoose.model('User');
+    UserModel = mongoose.model('users');
 
 //Configure Passport for logging in...
 passport.use(new LocalStrategy(

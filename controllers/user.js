@@ -1,5 +1,5 @@
 var mongoose = require('mongoose');
-var UserModel = mongoose.model('User');
+var UserModel = mongoose.model('users');
 var passport = require('passport');
 
 exports.index = function(req, res) {
