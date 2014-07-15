@@ -2,82 +2,61 @@ var mongoose = require('mongoose');
 var UserModel = mongoose.model('users');
 var passport = require('passport');
 
-exports.index = function(req, res) {
-    var message = req.flash('info');
-    console.log('GET!!!');
-    if (req.method === 'GET') {
+exports.users = function(req, res) {
+
+    
         UserModel.find(function(err, users) {
             if (!err) {
-                res.render('users/users', {
-                    title: 'Users Index page!',
-                    users: users,
-                    message: message
-                });
+                res.send({"status":"success","data":users});
             } else {
                 return console.log(err);
             }
         });
+};
 
-    } else if (req.method === 'POST') {
-        console.log('METHOD POST');
-
-        user = new UserModel({
+exports.create=function(req,res){
+     user = new UserModel({
             username: req.body.username,
             email: req.body.email
         });
         user.save(function(err) {
             if (!err) {
-                req.flash('info', 'User created')
-                res.redirect('/users');
+                
+                res.send({"status":"success","data":req.body});
 
             } else {
-                return console.log(err);
+                res.send({"status":"error", "data":err});
             }
         });
 
-
-    }
-
-
-
-};
+}
 
 exports.delete = function(req, res) {
     UserModel.findById(req.params.id, function(err, user) {
         user.remove(function(err) {
             if (!err) {
-                req.flash('info', 'User Deleted')
-                res.redirect('/users');
+                res.send({"status":"success","data":null});
             } else {
-                console.log(err);
+                res.send({"status":"error", "data":err});
             }
         });
     });
 
 };
 
-
-exports.edit = function(req, res) {
-    var message = req.flash('info');
-    if (req.method === 'GET') {
-        UserModel.findOne({
+exports.findUser=function(){
+    UserModel.findOne({
             "username": req.params.username
         }, function(err, user) {
             if (!err) {
-                res.render('users/edit', {
-                    title: 'Edit Page',
-                    user: user,
-                    message: message,
-                    errors: false
-                });
+                res.send({"status":"success", "data":user});
             } else {
-                return console.log(err);
+                res.send({"status":"err", "data":err});
             }
         });
-
-
-    }
-    if (req.method === 'POST') {
+};
+exports.updateUser = function(req, res) {
+    
         UserModel.findOne({
             "username": req.params.username
         }, function(err, user) {
@@ -87,49 +66,25 @@ exports.edit = function(req, res) {
 
             user.save(function(err) {
                 if (!err) {
-                    req.flash('info', 'User Updated');
-                    res.redirect('/users');
+                    res.send({"status":"success", "data":user});
                 } else {
-                    console.log(err);
-                    res.render('users/edit', {
-                        title: 'Edit Page',
-                        user: user,
-                        message: message,
-                        errors: err
-                    });
+                   res.send({"status":"error", "data":err});
 
                 }
             });
         });
-    }
+    
 
 
 };
 
-exports.login = function(req, res) {
-    var message = req.flash('info');
-    res.render('users/login', {
-        title: 'Users Index page!',
-        message: message
-    });
-};
 
 exports.resetpw = function(req, res) {
-    var message = req.flash('info');
-    if (req.method === 'GET') {
-
-        res.render('users/resetpw', {
-            title: 'Password Recovery',
-            message: message
-        });
-
-    } else if (req.method === 'POST') {
         var newpw = UserModel.resetpw();
 
         UserModel.findOne({
             'email': req.body.email
         }, function(err, user) {
-           console.log('USER', user);
             user.password = newpw;
             if (!err) {
                 //save user 
@@ -138,24 +93,22 @@ exports.resetpw = function(req, res) {
                         //send email
                         var result = UserModel.emails.resetpw(res, user, newpw);
                         if (result === 'error') {
-                            req.flash('info', 'There was an error sending the email');
-                            res.redirect('/user/forgot_password');
+                            
+                            res.send({"message":"unable to reset password"});
                         }
-                        req.flash('info', 'Email Sent');
-                        res.redirect('/user/forgot_password');
+                       res.send({"status":"success"});
                     }else{
                       console.log(err);
-                        req.flash('info', 'Unable to Save User');
-                        res.redirect('/user/forgot_password');
+                        res.send({"status":"error","data":err});
                     }
                 });
 
             } else {
-                req.flash('info', 'User could not be found');
-                res.redirect('/user/forgot_password');
+                
+                res.send({"message":"user not found"});
             }
         });
 
-    }
+    
 
 };

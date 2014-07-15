@@ -1,0 +1,11 @@
+{
+  "name": "ng-blog",
+  "version": "0.3.2",
+  "devDependencies": {
+    "angularjs": "*",
+    "bootstrap": "~3.2.0",
+    "angular-ui-router": "~0.2.10",
+    "angular-sanitize": "~1.2.20"
+  },
+  "dependencies": {}
+}

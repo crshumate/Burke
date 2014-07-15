@@ -103,6 +103,7 @@ app.use(function(err, req, res, next) {
 //check if user is logged in middelware
 
 function authenticated(req, res, next) {
+    console.log(req.user);
     if (req.user) {
         next();
     } else {
@@ -111,35 +112,25 @@ function authenticated(req, res, next) {
 }
 /*---Page Routes---*/
 app.get('/', routes.index);
-app.get('/users', authenticated, users.pages.index);
-app.post('/users', authenticated, users.pages.index);
+app.get('/users', authenticated, users.pages.users);
+app.post('/users/create', authenticated, users.pages.create);
 app.get('/user/delete/:id', authenticated, users.pages.delete);
-app.get('/user/edit/:username', authenticated, users.pages.edit);
-app.post('/user/edit/:username', authenticated, users.pages.edit);
-app.get('/user/forgot_password', users.pages.resetpw);
+app.get('/user/edit/:username', authenticated, users.pages.findUser);
+app.post('/user/edit/:username', authenticated, users.pages.updateUser);
 app.post('/user/forgot_password', users.pages.resetpw);
 
 //Login Routes
-app.get('/login', users.pages.login);
+//app.get('/login', users.pages.login);
 app.post('/login',
-    passport.authenticate('local', {
-        successRedirect: '/',
-        failureRedirect: '/login',
-        failureFlash: true
-    })
+    passport.authenticate('local'), 
+    function(req,res){
+        res.send({"status":"success", "data":user});
+    });
 );
 app.get('/logout', function(req, res) {
     req.logout();
-    res.redirect('/');
 });
 
-/*---API Routes---*/
-app.get('/api', routes.api);
-app.get('/api/users', users.api.get);
-app.post('/api/users', users.api.post);
-app.get('/api/users/:name', users.api.getUser);
-app.put('/api/users/:name', users.api.updateUser);
-app.delete('/api/users/:id', users.api.delete);
 
 
 
